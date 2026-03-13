@@ -2,6 +2,7 @@
 # osa2cal
 
 CLI utility to sync college schedules from OpenScheduleAPI to CalDAV calendars or ICS files.
+
 (!) WARNING: This utility is in early development stage and may be very unstable
 ## Features
 

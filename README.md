@@ -21,7 +21,7 @@ cargo install --path .
 Or build from source:
 
 ```bash
-git clone https://github.com/yourusername/osa2cal
+git clone https://github.com/bircoder432/osa2cal
 cd osa2cal
 cargo build --release
 ```

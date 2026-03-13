@@ -25,6 +25,7 @@ pub struct Event {
     pub description: Option<String>,
     pub start: NaiveDateTime,
     pub end: NaiveDateTime,
+    pub timezone: String,
 }
 
 impl CalDavClient {
@@ -149,13 +150,15 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:{}
 DTSTAMP:{}
-DTSTART;TZID=Europe/Moscow:{}
-DTEND;TZID=Europe/Moscow:{}
+DTSTART;TZID={}:{}
+DTEND;TZID={}:{}
 SUMMARY:{}
 "#,
             event.uid,
             now,
+            event.timezone,
             start,
+            event.timezone,
             end,
             escape_ical(&event.summary)
         );

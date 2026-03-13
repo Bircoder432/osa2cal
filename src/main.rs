@@ -454,5 +454,9 @@ async fn create_caldav_event(
         description: Some(description),
         start,
         end,
+        timezone: config
+            .timezone
+            .clone()
+            .unwrap_or("Europe/Moscow".to_string()),
     })
 }

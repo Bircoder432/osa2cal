@@ -14,6 +14,7 @@ pub struct Config {
     pub caldav_password: Option<String>,
     pub college_name: Option<String>,
     pub calendar_name: Option<String>,
+    pub timezone: Option<String>,
 }
 
 impl Config {

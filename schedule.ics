@@ -1,0 +1,44 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:ICALENDAR-RS
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+DTSTAMP:20260313T175653Z
+DESCRIPTION:Teacher: /**Основы логистики - 2 п/г  (  )\nК
+ иселев А.М.\n**Финансовые рынки и институт
+ ы - 3 п/г \nЧерепанова А.Н.\n**Основы страхов
+ ого дела - 4 п/г \nДенисова О.В.\nCabinet: 201-1/каб
+ .8 Р\n\n309\n\nкаб.43 Р
+DTEND:20260321T093000
+DTSTART:20260321T083000
+LOCATION:ТКПСТ - 201-1/каб.8 Р\n\n309\n\nкаб.43 Р
+SUMMARY:**Финансовая безопасность - 1 п/г
+UID:osa2cal-161-2026-03-21-1@osa2cal
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20260313T175653Z
+DESCRIPTION:Teacher: /**Основы логистики - 2 п/г  (  )\nК
+ иселев А.М.\n**Финансовые рынки и институт
+ ы - 3 п/г \nЧерепанова А.Н.\n**Основы страхов
+ ого дела - 4 п/г \nДенисова О.В.\nCabinet: 201-1/каб
+ .8 Р\n\n309\n\nкаб.43 Р
+DTEND:20260321T104000
+DTSTART:20260321T094000
+LOCATION:ТКПСТ - 201-1/каб.8 Р\n\n309\n\nкаб.43 Р
+SUMMARY:**Финансовая безопасность - 1 п/г
+UID:osa2cal-161-2026-03-21-2@osa2cal
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20260313T175653Z
+DESCRIPTION:Teacher: /**Основы логистики - 2 п/г  (  )\nК
+ иселев А.М.\n**Финансовые рынки и институт
+ ы - 3 п/г \nЧерепанова А.Н.\n**Основы страхов
+ ого дела - 4 п/г \nДенисова О.В.\nCabinet: 201-1/каб
+ .8 Р\n\n309\n\nкаб.43 Р
+DTEND:20260321T115000
+DTSTART:20260321T105000
+LOCATION:ТКПСТ - 201-1/каб.8 Р\n\n309\n\nкаб.43 Р
+SUMMARY:**Финансовая безопасность - 1 п/г
+UID:osa2cal-161-2026-03-21-3@osa2cal
+END:VEVENT
+END:VCALENDAR

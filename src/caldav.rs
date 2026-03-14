@@ -120,7 +120,9 @@ impl CalDavClient {
 
     pub async fn put_event(&self, calendar_id: &str, event: &Event) -> Result<()> {
         let cal_url = self.get_calendar_url(calendar_id);
-        let event_url = format!("{}osa2cal-{}.ics", cal_url, event.uid);
+        let event_url = format!("{}osa2cal-{}.ics", cal_url, event.uid)
+            .trim_end_matches("/")
+            .to_string();
 
         let ical_data = self.event_to_ical(event);
 
@@ -142,36 +144,43 @@ impl CalDavClient {
         let start = event.start.format("%Y%m%dT%H%M%S");
         let end = event.end.format("%Y%m%dT%H%M%S");
 
-        let mut ical = format!(
-            r#"BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//osa2cal//College Schedule//EN
-CALSCALE:GREGORIAN
-BEGIN:VEVENT
-UID:{}
-DTSTAMP:{}
-DTSTART;TZID={}:{}
-DTEND;TZID={}:{}
-SUMMARY:{}
-"#,
-            event.uid,
-            now,
-            event.timezone,
-            start,
-            event.timezone,
-            end,
-            escape_ical(&event.summary)
-        );
+        // Собираем все текстовые поля в одну Rust-строку
+        let summary = escape_ical(&event.summary);
+        let location = event
+            .location
+            .as_ref()
+            .map(|l| escape_ical(&l.replace("\r\n", "\n").replace("\r", "\n")))
+            .unwrap_or_default();
+        let description = event
+            .description
+            .as_ref()
+            .map(|d| escape_ical(&d.replace("\r\n", "\n").replace("\r", "\n")))
+            .unwrap_or_default();
 
-        if let Some(loc) = &event.location {
-            ical.push_str(&format!("LOCATION:{}\n", escape_ical(loc)));
-        }
-        if let Some(desc) = &event.description {
-            ical.push_str(&format!("DESCRIPTION:{}\n", escape_ical(desc)));
-        }
-
-        ical.push_str("END:VEVENT\nEND:VCALENDAR");
-        ical
+        format!(
+            "BEGIN:VCALENDAR\n\
+                 VERSION:2.0\n\
+                 PRODID:-//osa2cal//College Schedule//EN\n\
+                 CALSCALE:GREGORIAN\n\
+                 BEGIN:VEVENT\n\
+                 UID:{uid}\n\
+                 DTSTAMP:{dtstamp}\n\
+                 DTSTART;TZID={tz}:{start}\n\
+                 DTEND;TZID={tz}:{end}\n\
+                 SUMMARY:{summary}\n\
+                 LOCATION:{location}\n\
+                 DESCRIPTION:{description}\n\
+                 END:VEVENT\n\
+                 END:VCALENDAR",
+            uid = event.uid,
+            dtstamp = now,
+            tz = event.timezone,
+            start = start,
+            end = end,
+            summary = summary,
+            location = location,
+            description = description
+        )
     }
 
     fn request(&self, method: &str, url: &str, body: Option<&str>) -> reqwest::RequestBuilder {
@@ -192,5 +201,5 @@ fn escape_ical(text: &str) -> String {
     text.replace("\\", "\\\\")
         .replace(";", "\\;")
         .replace(",", "\\,")
-        .replace("\n", "\\n")
+        .replace("\n", "\\n") // реальные переводы строки в Rust уже учтены
 }

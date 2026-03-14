@@ -2,8 +2,10 @@ use anyhow::Result;
 use chrono::{Datelike, NaiveDateTime};
 use clap::{Parser, Subcommand};
 use colored::Colorize;
+use hex;
 use indicatif::ProgressBar;
 use osars::Client;
+use sha1::{Digest, Sha1};
 use std::fs;
 use std::path::PathBuf;
 
@@ -439,12 +441,15 @@ async fn create_caldav_event(
         lesson.teacher, schedule.group_id
     );
 
+    let title_hash = {
+        let mut hasher = Sha1::new();
+        hasher.update(lesson.title.as_bytes());
+        hex::encode(hasher.finalize())
+    };
+
     let uid = format!(
         "osa2cal-{}-{}-{}-{}",
-        schedule.group_id,
-        schedule.date,
-        lesson.order,
-        lesson.title.replace(' ', "_")
+        schedule.group_id, schedule.date, lesson.order, title_hash
     );
 
     Ok(caldav::Event {

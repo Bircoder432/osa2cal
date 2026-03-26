@@ -1,5 +1,5 @@
 use anyhow::Result;
-use chrono::{Datelike, NaiveDateTime};
+use chrono::NaiveDateTime;
 use clap::{Parser, Subcommand};
 use colored::Colorize;
 use hex;
@@ -82,13 +82,6 @@ enum Commands {
         /// Calendar ID/name (overrides config)
         #[arg(short, long)]
         calendar_id: Option<String>,
-    },
-
-    /// Show schedule in terminal
-    Show {
-        /// Show period: today, tomorrow, week
-        #[arg(short, long, default_value = "week")]
-        period: String,
     },
 
     /// List available colleges, campuses and groups
@@ -280,21 +273,6 @@ async fn main() -> Result<()> {
             );
         }
 
-        Commands::Show { period } => {
-            let api_url = config
-                .api_url
-                .as_ref()
-                .ok_or_else(|| anyhow::anyhow!("API URL not configured"))?;
-            let group_id = config
-                .default_group
-                .ok_or_else(|| anyhow::anyhow!("Group ID not specified"))?;
-
-            let client = Client::new(api_url);
-            let schedules = fetch_schedules(&client, group_id, &period).await?;
-
-            print_schedule(&schedules);
-        }
-
         Commands::List { target } => {
             let api_url = config
                 .api_url
@@ -389,36 +367,6 @@ async fn fetch_schedules(
     };
 
     Ok(schedules)
-}
-
-fn print_schedule(schedules: &[osars::Schedule]) {
-    for schedule in schedules {
-        let date = schedule.date;
-        let weekday = date.weekday();
-        println!(
-            "\n{} {} ({})",
-            date.to_string().bold().underline(),
-            format!("{:?}", weekday).cyan(),
-            schedule.lessons.len()
-        );
-
-        for lesson in &schedule.lessons {
-            let time = format!(
-                "{}-{}",
-                lesson.start_time.format("%H:%M"),
-                lesson.end_time.format("%H:%M")
-            )
-            .yellow();
-
-            println!(
-                "  {} | {} | {} | {}",
-                time,
-                lesson.title.bold(),
-                lesson.cabinet.green(),
-                lesson.teacher.dimmed()
-            );
-        }
-    }
 }
 
 async fn create_caldav_event(

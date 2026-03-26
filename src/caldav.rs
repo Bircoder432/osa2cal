@@ -12,12 +12,6 @@ pub struct CalDavClient {
 }
 
 #[derive(Debug, Clone)]
-pub struct Calendar {
-    pub url: String,
-    pub name: String,
-}
-
-#[derive(Debug, Clone)]
 pub struct Event {
     pub uid: String,
     pub summary: String,
@@ -66,7 +60,7 @@ impl CalDavClient {
         Ok(resp.status().is_success())
     }
 
-    pub async fn create_calendar(&self, calendar_id: &str, display_name: &str) -> Result<Calendar> {
+    pub async fn create_calendar(&self, calendar_id: &str, display_name: &str) -> Result<()> {
         let url = self.get_calendar_url(calendar_id);
 
         let body = format!(
@@ -89,10 +83,7 @@ impl CalDavClient {
         match resp.status().as_u16() {
             201 | 200 => {
                 println!("  {} Calendar '{}' created", "✓".green(), calendar_id);
-                Ok(Calendar {
-                    url,
-                    name: display_name.to_string(),
-                })
+                Ok(())
             }
             405 => {
                 anyhow::bail!(
@@ -110,12 +101,6 @@ impl CalDavClient {
                 anyhow::bail!("Failed to create calendar: HTTP {}", resp.status())
             }
         }
-    }
-
-    pub async fn delete_calendar(&self, calendar_id: &str) -> Result<()> {
-        let url = self.get_calendar_url(calendar_id);
-        let _ = self.request("DELETE", &url, None).send().await?;
-        Ok(())
     }
 
     pub async fn put_event(&self, calendar_id: &str, event: &Event) -> Result<()> {

@@ -128,8 +128,6 @@ impl CalDavClient {
         let now = Utc::now().format("%Y%m%dT%H%M%SZ");
         let start = event.start.format("%Y%m%dT%H%M%S");
         let end = event.end.format("%Y%m%dT%H%M%S");
-
-        // Собираем все текстовые поля в одну Rust-строку
         let summary = escape_ical(&event.summary);
         let location = event
             .location
@@ -186,5 +184,5 @@ fn escape_ical(text: &str) -> String {
     text.replace("\\", "\\\\")
         .replace(";", "\\;")
         .replace(",", "\\,")
-        .replace("\n", "\\n") // реальные переводы строки в Rust уже учтены
+        .replace("\n", "\\n")
 }

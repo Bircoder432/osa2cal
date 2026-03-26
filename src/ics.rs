@@ -1,4 +1,3 @@
-// src/ics.rs
 use anyhow::Result;
 use chrono::Timelike;
 use icalendar::{Calendar, Component, Event, EventLike};

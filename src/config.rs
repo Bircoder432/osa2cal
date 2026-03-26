@@ -26,7 +26,6 @@ impl Config {
         let content = fs::read_to_string(path)?;
         let mut config: Config = toml::from_str(&content)?;
 
-        // Try to load password from keyring or env if not in config
         if config.caldav_password.is_none() {
             if let Ok(pass) = std::env::var("OSARS_CALDAV_PASSWORD") {
                 config.caldav_password = Some(pass);
@@ -41,7 +40,6 @@ impl Config {
         if let Some(parent) = path.parent() {
             fs::create_dir_all(parent)?;
         }
-        // Don't save password to file
         let mut saveable = self.clone();
         saveable.caldav_password = None;
         fs::write(path, toml::to_string_pretty(&saveable)?)?;

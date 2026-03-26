@@ -111,7 +111,7 @@ osa2cal sync --period month --force --calendar-id schedule
 | `week` | Current week (all 7 days) |
 | `month` | Current + next week |
 | `all` | Available weeks (previous, current, next) |
-| `YYYY-MM-DD` | Specific date |
+| `DD-MM-YYYY` | Specific date |
 
 ## CalDAV Server Compatibility
 

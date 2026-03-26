@@ -383,7 +383,7 @@ async fn fetch_schedules(
         }
         date if date.contains('-') => query.date(date).send().await?,
         _ => anyhow::bail!(
-            "Unknown period: {}. Use: today, tomorrow, week, month, all, or YYYY-MM-DD",
+            "Unknown period: {}. Use: today, tomorrow, week, month, all, or DD-MM-YYYY",
             period
         ),
     };
